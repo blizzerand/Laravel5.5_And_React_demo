@@ -78,8 +78,8 @@
             @endif
 
             <div class="content">
-                <div id="root" class="title m-b-md">
-                   
+                <div class="title m-b-md">
+                    Laravel
                 </div>
 
                 <div class="links">
@@ -91,6 +91,5 @@
                 </div>
             </div>
         </div>
-        <script  type="text/javascript" src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>
