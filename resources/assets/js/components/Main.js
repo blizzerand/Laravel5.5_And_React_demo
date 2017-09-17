@@ -10,6 +10,8 @@ class Main extends Component {
     //Initialize the state in the constructor
     this.state = {
         products: [],
+        currentProduct: null
+    
     }
   }
   /*componentDidMount() is a lifecycle method
@@ -28,27 +30,59 @@ class Main extends Component {
   }
 
  renderProducts() {
+        const listStyle = {
+            listStyle: 'none',
+            fontSize: '18px',
+            lineHeight: '1.8em',
+        }
     return this.state.products.map(product => {
         return (
             /* When using list you need to specify a key
              * attribute that is unique for each list item
             */
-            <li key={product.id} >
+            <li style={listStyle} onClick={
+                () =>this.handleClick(product)} key={product.id} >
                 { product.title } 
             </li>      
         );
     })
   }
+
+  handleClick(product) {
+      //handleClick is used to set the state
+      this.setState({currentProduct:product});
   
+  }
+    
   render() {
-   /* Some css code has been removed for brevity */
+
+   const mainDivStyle =  {
+        display: "flex",
+        flexDirection: "row"
+    }
+    
+    const divStyle = {
+       
+        justifyContent: "flex-start",
+        padding: '10px',
+        width: '35%',
+        background: '#f0f0f0',
+        padding: '20px 20px 20px 20px',
+        margin: '30px 10px 10px 30px'
+        
+    }
+
     return (
         <div>
-            <h3> All products </h3>
-              <ul>
-                { this.renderProducts() }
-              </ul> 
+          <div style= {mainDivStyle}>
+            <div style={divStyle}>
+                <h3> All products </h3>
+                  <ul>
+                    { this.renderProducts() }
+                  </ul> 
             </div> 
+          </div>
+        </div>
       
     );
   }

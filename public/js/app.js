@@ -41125,6 +41125,8 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -41146,7 +41148,9 @@ var Main = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
         _this.state = {
-            products: []
+            products: [],
+            currentProduct: null
+
         };
         return _this;
     }
@@ -41171,6 +41175,13 @@ var Main = function (_Component) {
     }, {
         key: 'renderProducts',
         value: function renderProducts() {
+            var _this3 = this;
+
+            var listStyle = {
+                listStyle: 'none',
+                fontSize: '18px',
+                lineHeight: '1.8em'
+            };
             return this.state.products.map(function (product) {
                 return (
                     /* When using list you need to specify a key
@@ -41178,28 +41189,58 @@ var Main = function (_Component) {
                     */
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'li',
-                        { key: product.id },
+                        { style: listStyle, onClick: function onClick() {
+                                return _this3.handleClick(product);
+                            }, key: product.id },
                         product.title
                     )
                 );
             });
         }
     }, {
+        key: 'handleClick',
+        value: function handleClick(product) {
+            //handleClick is used to set the state
+            this.setState({ currentProduct: product });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            /* Some css code has been removed for brevity */
+            var _divStyle;
+
+            var mainDivStyle = {
+                display: "flex",
+                flexDirection: "row"
+            };
+
+            var divStyle = (_divStyle = {
+
+                justifyContent: "flex-start",
+                padding: '10px',
+                width: '35%',
+                background: '#f0f0f0'
+            }, _defineProperty(_divStyle, 'padding', '20px 20px 20px 20px'), _defineProperty(_divStyle, 'margin', '30px 10px 10px 30px'), _divStyle);
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'h3',
-                    null,
-                    ' All products '
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'ul',
-                    null,
-                    this.renderProducts()
+                    'div',
+                    { style: mainDivStyle },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { style: divStyle },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h3',
+                            null,
+                            ' All products '
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'ul',
+                            null,
+                            this.renderProducts()
+                        )
+                    )
                 )
             );
         }
