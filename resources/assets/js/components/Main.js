@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Product from './Product';
+import AddProduct from './AddProduct';
 
 /* Main Component */
 class Main extends Component {
@@ -13,6 +15,7 @@ class Main extends Component {
         currentProduct: null
     
     }
+     this.handleAddProduct = this.handleAddProduct.bind(this);
   }
   /*componentDidMount() is a lifecycle method
    * that gets called after the component is rendered
@@ -49,10 +52,38 @@ class Main extends Component {
   }
 
   handleClick(product) {
+
       //handleClick is used to set the state
       this.setState({currentProduct:product});
   
   }
+
+   handleAddProduct(product) {
+     
+    product.price = Number(product.price);
+    /*Fetch API for post request */
+    fetch( 'api/products/', {
+        method:'post',
+        /* headers are important*/
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        
+        body: JSON.stringify(product)
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then( data => {
+       
+        this.setState((prevState)=> ({
+            products: prevState.products.concat(data),
+            currentProduct : data
+        }))
+    })
+ //update the state of products and currentProduct
+  }  
     
   render() {
 
@@ -80,8 +111,12 @@ class Main extends Component {
                   <ul>
                     { this.renderProducts() }
                   </ul> 
+
             </div> 
+                <Product product={this.state.currentProduct} />
+                <AddProduct onAdd={this.handleAddProduct} /> 
           </div>
+              
         </div>
       
     );

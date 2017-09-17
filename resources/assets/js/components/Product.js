@@ -6,13 +6,16 @@ import React, { Component } from 'react';
 const Product = ({product}) => {
    
   const divStyle = {
-      /*code omitted for brevity */
-      
+      display: 'flex',
+      flexDirection: 'column',
+      width: '65%',
+      margin: '30px 10px 10px 30px'
   }
 
-  //if the props product is null, return Product doesn't exist
+  //if the props for product is null, return Product doesn't exist
   if(!product) {
-    return(<div style={divStyle}>  Product Doesnt exist </div>);
+
+    return(<div style={divStyle}><h2>  Product Doesnt Exist </h2> </div>);
   }
     
   //Else, display the product data
