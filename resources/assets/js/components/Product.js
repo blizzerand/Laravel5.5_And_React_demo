@@ -15,7 +15,7 @@ const Product = ({product}) => {
   //if the props for product is null, return Product doesn't exist
   if(!product) {
 
-    return(<div style={divStyle}><h2>  Product Doesnt Exist </h2> </div>);
+    return(<div style={divStyle}><h2>  No Product was selected </h2> </div>);
   }
     
   //Else, display the product data
