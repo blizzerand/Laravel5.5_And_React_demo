@@ -1,69 +1,64 @@
 import React, { Component } from "react";
 
-export default class AddProduct extends Component {
+class EditProduct extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      newProduct: {
-        title: "",
-        description: "",
-        price: 0,
-        availability: 0
-      }
+      product: null
     };
 
-    // Boilterplate code for binding meethods with `this`
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  /** this mthod dynamically accepts inputs and stores it in the state **/
+  componentWillMount() {
+    this.setState({ product: this.props.product });
+  }
+
   handleInput(key, e) {
-    /**Duplicating and updating the state */
-    var state = Object.assign({}, this.state.newProduct);
+    let state = Object.assign({}, this.state.product);
     state[key] = e.target.value;
-    this.setState({ newProduct: state });
+    this.setState({ product: state });
   }
 
-  /**This methods is invoked when submit button is pressed */
   handleSubmit(e) {
     e.preventDefault();
-
-    /**
-     * A callback to the onAdd props. The current state is passed as a param
-     */
-    this.props.onAdd(this.state.newProduct);
-    this.addForm.reset();
+    this.props.update(this.state.product);
+    this.editForm.reset();
   }
 
   render() {
     const divStyle = {};
+    const product = this.state.product;
+
     return (
       <div>
-        <h2>Add new product</h2>
+        <h2>Edit product</h2>
 
         <div style={divStyle}>
           <form
             onSubmit={this.handleSubmit}
-            ref={input => (this.addForm = input)}
+            ref={input => (this.editForm = input)}
           >
             <label htmlFor="title">Title</label>
             <input
               name="title"
               type="text"
+              value={product.title}
               onChange={e => this.handleInput("title", e)}
             />
             <label htmlFor="description">Description</label>
-            <input
+            <textarea
               name="description"
               type="text"
+              value={product.description}
               onChange={e => this.handleInput("description", e)}
             />
             <label htmlFor="price">price</label>
             <input
               name="price"
               type="text"
+              value={product.price}
               onChange={e => this.handleInput("price", e)}
             />
 
@@ -74,3 +69,5 @@ export default class AddProduct extends Component {
     );
   }
 }
+
+export default EditProduct;

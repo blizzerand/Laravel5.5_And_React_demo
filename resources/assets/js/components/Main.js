@@ -2,16 +2,22 @@ import React, { Component } from "react";
 import ReactDom from "react-dom";
 import Product from "./Product";
 import AddProduct from "./AddProduct";
+import EditProduct from "./EditProduct";
 
-class Main extends Component {
+export default class Main extends Component {
   constructor() {
     super();
     this.state = {
       products: [],
-      currentProduct: null
+      currentProduct: null,
+      editButtonClicked: false
     };
 
     this.handleAddProduct = this.handleAddProduct.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleDeleteConfirmation = this.handleDeleteConfirmation.bind(this);
   }
 
   componentDidMount() {
@@ -40,12 +46,13 @@ class Main extends Component {
   }
 
   handleClick(product) {
+    this.state.editButtonClicked = false;
     this.setState({ currentProduct: product });
   }
 
   handleAddProduct(product) {
     product.price = Number(product.price);
-    console.log(product);
+
     fetch("api/products", {
       method: "post",
       headers: {
@@ -71,11 +78,22 @@ class Main extends Component {
       method: "delete"
     }).then(response => {
       /* Duplicate the array and filter out the item to be deleted */
-      var newProducts = this.statee.products.filter(function(item) {
+      var newProducts = this.state.products.filter(function(item) {
         return item !== currentProduct;
       });
+
       this.setState({ products: newProducts, currentProduct: null });
     });
+  }
+
+  handleDeleteConfirmation(event) {
+    if (confirm("Are you sure you want to delete it?")) {
+      this.handleDelete();
+    }
+  }
+
+  handleEdit() {
+    this.setState({ editButtonClicked: true });
   }
 
   handleUpdate(product) {
@@ -107,23 +125,31 @@ class Main extends Component {
     return (
       <div>
         <div className="col-md-6">
-          <h3>All Products</h3>
+          <h3>All Products ({this.state.products.length})</h3>
           <ul>{this.renderProducts()}</ul>
         </div>
         <div className="col-md-6">
-          <Product
-            product={this.state.currentProduct}
-            delete={this.handleDelete}
-            update={this.handleUpdate}
-          />
-          <AddProduct onAdd={this.handleAddProduct} />
+          {this.state.editButtonClicked === true ? (
+            <EditProduct
+              product={this.state.currentProduct}
+              update={this.handleUpdate}
+            />
+          ) : (
+            <React.Fragment>
+              <Product
+                handleDeleteConfirmation={this.handleDeleteConfirmation}
+                product={this.state.currentProduct}
+                deleteProduct={this.handleDelete}
+                handleEdit={this.handleEdit}
+              />
+              <AddProduct onAdd={this.handleAddProduct} />
+            </React.Fragment>
+          )}
         </div>
       </div>
     );
   }
 }
-
-export default Main;
 
 if (document.getElementById("root")) {
   ReactDom.render(<Main />, document.getElementById("root"));
